@@ -100,7 +100,7 @@ DATABASES = {
         'NAME': 'commentsdb',
         'USER': 'comment',
         'PASSWORD': '123',
-        'HOST': 'localhost',
+        'HOST': 'database',
         'PORT': '',
     }
 }
