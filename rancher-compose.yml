@@ -1,0 +1,4 @@
+database:
+  scale: 1
+restapi:
+  scale: 1

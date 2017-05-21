@@ -4,7 +4,8 @@ database:
     volumes:
         - pgdata:/var/lib/postgresql/data/
 restapi:
-    build: .
+    #build: .
+    image: jaavargasarunal/comment-django
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
         - /usr/src/app
