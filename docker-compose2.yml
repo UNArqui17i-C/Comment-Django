@@ -1,19 +1,19 @@
 version: '2'
 services:
-  database:
+  database-slave:
       restart: always
       image: 'bitnami/postgresql:latest'
       ports:
         - '5432'
       labels:
-        io.rancher.scheduler.affinity:host_label: id=4
+        io.rancher.scheduler.affinity:host_label: id=6
       environment:
-        - POSTGRESQL_REPLICATION_MODE=master
+        - POSTGRESQL_REPLICATION_MODE=slave
         - POSTGRESQL_REPLICATION_USER=repl_user
         - POSTGRESQL_REPLICATION_PASSWORD=repl_password
-        - POSTGRESQL_USERNAME=postgres
-        - POSTGRESQL_DATABASE=post_ms_development
-  restapi:
+        - POSTGRESQL_MASTER_HOST=database
+        - POSTGRESQL_MASTER_PORT=5432
+  restapi-2:
       #build: .
       image: jaavargasarunal/comment-django
       command: python manage.py runserver 0.0.0.0:8000
@@ -22,8 +22,9 @@ services:
       ports:
           - "8000:8000"
       environment:
-          - POSTGRES_ADDR=database
+          - POSTGRES_ADDR=database-slave
+          - POSTGRES_PORT=5432
       labels:
-        io.rancher.scheduler.affinity:host_label: id=4
+        io.rancher.scheduler.affinity:host_label: id=6
       depends_on:
-        - database
+        - database-slave
